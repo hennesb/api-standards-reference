@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: myapi
+
+springdoc:
+  swagger-ui:
+    # This shows the security requirements (scopes) in the operations section
+    show-common-extensions: true
+    # Ensures the "Authorize" configuration is clearly displayed
+    display-operation-id: true

@@ -1,0 +1,4 @@
+**/*.md
+**/.travis.yml
+**/pom.xml
+**/README.md

@@ -1,0 +1,96 @@
+openapi: 3.1.0
+info:
+  title: Simple Person API
+  version: 1.0.0
+  description: A simplified API for learning Spring Boot 4 and OpenAPI generation.
+security:
+  - M2MClientCredentials: []
+paths:
+  /customer/profile:
+    get:
+      tags:
+        - Person
+      summary: Get person details by name
+      operationId: getPersonByName
+      parameters:
+        - $ref: './schemas/parameters.yml#/NameQueryParam'
+      security:
+        - M2MClientCredentials:
+            - customer:read
+      responses:
+        '200':
+          description: Successfully retrieved person
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+        '404':
+          description: Person not found
+
+  /customer/profiles:
+    get:
+      tags:
+        - Person
+      summary: Retrieve all customer profiles
+      operationId: getAllCustomerProfiles
+      security:
+        - M2MClientCredentials:
+            - customer:read
+      responses:
+        '200':
+          description: Successfully retrieved person
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Person'
+
+        '404':
+          description: Profiles not found
+
+  /staff/profile:
+    get:
+      tags:
+        - InternalAccess
+      summary: Get person details by name for staff
+      operationId: getPersonByNameInternal
+      parameters:
+        - $ref: './schemas/parameters.yml#/NameQueryParam'
+      security:
+        - M2MClientCredentials:
+            - customer:manage
+      responses:
+        '200':
+          description: Successfully retrieved person
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Person'
+        '404':
+          description: Person not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+
+components:
+  securitySchemes:
+    M2MClientCredentials:
+      type: oauth2
+      description: Use your Client ID and Client Secret to obtain a service token.
+      flows:
+        clientCredentials:
+          tokenUrl: https://auth.example.com/oauth2/token
+          scopes:
+            customer:read: Read customer data
+            customer:create: Create a customer
+            customer:update: Update a customer record
+            customer:manage: Admin access on customer records
+  schemas:
+    Person:
+      $ref: './schemas/person.yml'
+    InternalPerson:
+      $ref: './schemas/staff.yml'
+    ApiError:
+      $ref: './schemas/error.yml'
