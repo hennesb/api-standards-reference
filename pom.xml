@@ -177,6 +177,7 @@
                                 <useEnumCaseInsensitive>true</useEnumCaseInsensitive>
                                 <skipDefaultInterface>true</skipDefaultInterface>
                                 <unhandledException>true</unhandledException>
+                                <legacyDiscriminator>false</legacyDiscriminator>
                             </configOptions>
                         </configuration>
                     </execution>
