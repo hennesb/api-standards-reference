@@ -86,6 +86,7 @@ public class SecurityConfig {
                                                                 .addString("customer:create", "Create a customer record")
                                                                 .addString("customer:update", "Update a customer record")
                                                                 .addString("customer:manage", "Admin functions on a customer record")
+                                                                .addString("pet:manage", "Admin functions on a pet record")
                                                         )
                                                 )
                                         )

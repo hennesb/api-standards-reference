@@ -73,6 +73,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiError'
+  /pets:
+    post:
+      tags:
+        - Pets
+      summary: Add a new pet (Cat or Dog)
+      security:
+        - M2MClientCredentials:
+            - pet:manage
+      operationId: addPets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PetRequest'
+      responses:
+        '201':
+          description: Pet created successfully
 
 components:
   securitySchemes:
@@ -87,6 +105,7 @@ components:
             customer:create: Create a customer
             customer:update: Update a customer record
             customer:manage: Admin access on customer records
+            pet:manage: Manage pets
   schemas:
     Person:
       $ref: './schemas/person.yml'
@@ -94,3 +113,42 @@ components:
       $ref: './schemas/staff.yml'
     ApiError:
       $ref: './schemas/error.yml'
+    PetRequest: # This becomes the Java Class/Interface name
+      oneOf:
+        - $ref: "#/components/schemas/Cat"
+        - $ref: "#/components/schemas/Dog"
+      discriminator:
+        propertyName: petType
+        mapping:
+          CAT: '#/components/schemas/Cat'
+          DOG: '#/components/schemas/Dog'
+    Dog:
+        type: object
+        properties:
+          bark:
+            type: boolean
+          breed:
+            type: string
+            enum: [ Dingo, Husky, Retriever, Shepherd ]
+          petType:
+            type: string
+            pattern: '^DOG$'
+            default: DOG
+        required:
+          - petType
+
+    Cat:
+        type: object
+        properties:
+          hunts:
+            type: boolean
+          age:
+            type: integer
+          petType:
+            type: string
+            pattern: '^CAT$'
+            default: CAT
+        required:
+          - petType
+
+
